@@ -1,0 +1,7 @@
+This file contains a description of the brd.txt file.
+
+The brd.txt file contains the description of a boggle board. The first line of the file contains the number of rows in the board. The second line contains the number of columns on the boggle board.
+
+Each subsequent line contains a string which denotes the contents of the die at the corresponding position on the boggle board. The strings are stored in the file brd.txt in row major order.
+
+NOTE: brd.txt is just one example of how a boggle board can be represented. Your program should be independent of the format of the file used to represent the boggle board, i.e., your functions should not be dealing with files. The board and lexicon files will be processed by the calling main() method.
