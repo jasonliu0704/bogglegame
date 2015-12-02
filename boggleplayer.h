@@ -27,6 +27,12 @@ class BogglePlayer : public BaseBogglePlayer {
   }
 
   private:
+  MTrie lexicon;
+  //board parameter
+  unsigned int srow, scol, sborad;
+  string* myBoard;
+  //call indicator
+  bool builtLex, setBoard;
 };
 
 #endif
