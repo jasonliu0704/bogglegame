@@ -1,4 +1,4 @@
-
+//edited util.h
 
 #ifndef BOGGLEUTIL_H
 #define BOGGLEUTIL_H
@@ -18,13 +18,13 @@ class baseNode
    friend class drawBoard;
 
    private:
-      int index;
+      int diceIndex;
       bool Visited;
       string diceNum;
       vector<baseNode*>* adjacentList;
 
    public:
-      baseNode( string& diceNum, int index );
+      baseNode( string& diceNum, int diceIndex );
 
       ~baseNode();
 
@@ -60,7 +60,7 @@ class Lex
 
       ~Lex();
 
-     void build( const set<string>& word_list );
+     void create( const set<string>& word_list );
 
      bool findString( const string& word );
 
