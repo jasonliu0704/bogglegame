@@ -26,7 +26,7 @@ class MTrie {
     ~MTrie();
     bool clean(TNode* n);
     bool insert(string word);
-    bool search(string word);
+    int search(string word);
 };
 
 #endif

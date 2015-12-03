@@ -26,11 +26,15 @@ class BogglePlayer : public BaseBogglePlayer {
   ~BogglePlayer() {
   }
 
+  void push_neighbor(stack& nStack, int grid);
+  getAllValidWordsRec(unsigned int minimum_word_length, set<string>* words, string word, int grid);
+
   private:
   MTrie lexicon;
   //board parameter
   unsigned int srow, scol, sborad;
   string* myBoard;
+  bool * isVisited;
   //call indicator
   bool builtLex, setBoard;
 };

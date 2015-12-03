@@ -2,22 +2,27 @@
 #include <iostream>
 using namespace std;
 
-
-bool WordTrie::search(string word) {
+//return 0 for not a word and prefix, 1 for prefix, 2 for word
+int WordTrie::search(string word) {
   int i = 0;
   TNode* cur = root; 
   
   while(1){
     if(cur == 0 || i > word.length()){
-      return false;
-    }else if(cur->EOW && i == word.length()){
-      return true;
+      return 0;
+    }else if(i == word.length()){
+      if(cur->EOW){
+        return 2;
+      }else{
+        return 1;
+      }
     }else{
       cur = (cur->children).at(word.at(i) - 'a');
       i++;
     }
   }
 }
+
 
 TNode::TNode(char value, bool eow){
   EOW = eow;
