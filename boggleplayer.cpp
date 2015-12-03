@@ -89,6 +89,7 @@ vector<int> BogglePlayer::isOnBoard(const string& word) {
               if(myBoard[j].size() == word.size()){
                  break;
               }
+                result = myBoard -> isOnBoard(word);
               //if(isOnBoardRecurse(result, lowerCase_word.substr(myBoard[j].size()))){
                 //break;
               //}
