@@ -30,7 +30,7 @@ MTrie::MTrie(){
 TNode::TNode(char value, bool eow){
   EOW = eow;
   val = value;
-  children = vector<TNode*>(26, 0);
+  children.resize(26);
 }
 
 bool MTrie::insert(string word) {

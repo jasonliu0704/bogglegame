@@ -4,7 +4,7 @@
 #include <set>
 #include <locale>
 #include <array>
-//#include <iostream>
+#include <iostream>
 using namespace std;
 
 BogglePlayer::BogglePlayer() {
@@ -91,7 +91,7 @@ bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string
       //is a word
       case 2 :
         if(word.length() >= minimum_word_length){
-          //cout << word << endl;
+          cout << word << endl;
           words->insert(word);
           //cout << words->size() << endl;
         }
@@ -141,11 +141,12 @@ void BogglePlayer::getAllValidWordsRec(unsigned int minimum_word_length, set<str
       }
       //it is in the lexicon
       if(result == 2 && newWord.length() >=  minimum_word_length){
+        cout << newWord << endl;
         words->insert(newWord);
       }
       isVisited[neigh] = true;
       //is a prefix and check out other neighbors
-      //getAllValidWordsRec(minimum_word_length, words, newWord, neigh);
+      getAllValidWordsRec(minimum_word_length, words, newWord, neigh);
       isVisited[neigh] = false;
     }
   }
