@@ -23,7 +23,7 @@ class BogglePlayer : public BaseBogglePlayer {
 
   bool isOnBoardRec(vector<int>& path, const string& word, int grid, string& myword);
 
-  void push_neighbor(set<int>& nStore, int grid);
+  void push_neighbor(vector<int>& nStore, int grid);
   void getAllValidWordsRec(unsigned int minimum_word_length, set<string>* words, string word, int grid);
   
   explicit BogglePlayer();

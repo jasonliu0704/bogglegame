@@ -28,8 +28,8 @@ void BogglePlayer::buildLexicon(const set<string>& word_list){
   //lexicon.root = 0;
 
   //insert words into the lexicon datastructure
-  for(auto word : word_list){
-    lexicon.insert(word);
+  for(set<string>::iterator it = word_list.begin(); it != word_list.end(); it++){
+    lexicon.insert(*it);
   }
 
   builtLex = true;
@@ -41,8 +41,8 @@ void BogglePlayer::setBoard(unsigned int rows, unsigned int cols, string** diceA
   srow = rows;
   sboard = cols * rows;
   //set up board and isvisted and if they exits before, reset it
-  //if(myBoard) delete[] myBoard;
-  //if(isVisited)delete[] isVisited;
+  if(myBoard) delete[] myBoard;
+  if(isVisited)delete[] isVisited;
 
   myBoard = new string[sboard];
   isVisited = new bool[sboard];
@@ -77,62 +77,52 @@ bool BogglePlayer::getAllValidWords(unsigned int minimum_word_length, set<string
 
     //check validity and attributes for the start letter
     int result = lexicon.search(word);
-    switch(result){
-
-      //not a word and prefix
-      case 0 :
-        break;
-      //prefix
-      case 1 :
-        isVisited[grid] = true;
-        getAllValidWordsRec(minimum_word_length, words, word, grid);
-        isVisited[grid] = false;
-        break;
-      //is a word
-      case 2 :
-        if(word.length() >= minimum_word_length){
-          cout << word << endl;
-          words->insert(word);
-          //cout << words->size() << endl;
-        }
-        isVisited[grid] = true;
-        getAllValidWordsRec(minimum_word_length, words, word, grid);
-        isVisited[grid] = false;
-        break;
+    
+    //not in here
+    if(result == 0){ continue;}
+    //we find a word
+    else if(word.size() > minimum_word_length && result == 2){
+      words->insert(word);
+    }
+    else{
+      isVisited[grid] = true;
+      //recurse
+      getAllValidWordsRec(minimum_word_length, words, word,grid);
+      isVisited[grid] = false;
     }
   }
-  
-
   return true;
 }
+    
 
-void BogglePlayer::push_neighbor(set<int>& nStore, int grid){
-      if(grid + 1 < sboard)nStore.insert(grid + 1);
-      if(grid - 1 > 0)nStore.insert(grid - 1);
-      if(grid - srow - 1 >= 0)nStore.insert(grid - srow - 1);
-      if(grid - srow > 0)nStore.insert(grid - srow);
-      if(grid - srow + 1 >= 0)nStore.insert(grid - srow + 1);
-      if(grid + srow < sboard)nStore.insert(grid + srow);
-      if(grid + srow - 1 < sboard)nStore.insert(grid + srow - 1);
-      if(grid + srow + 1 < sboard)nStore.insert(grid + srow + 1);
+    
+void BogglePlayer::push_neighbor(vector<int>& nStore, int grid){
+      if((grid + 1 < sboard) && (grid%scol != 0))nStore.push_back(grid + 1);
+      if((grid - 1 > 0) && (grid %scol != 1))nStore.push_back(grid - 1);
+      if((grid - scol - 1 >= 0) && (grid %scol != 1))nStore.push_back(grid - scol - 1);
+      if(grid - scol > 0)nStore.push_back(grid - scol);
+      if((grid - scol + 1 >= 0) && (grid%scol != 0))nStore.push_back(grid - scol + 1);
+      if(grid + scol < sboard)nStore.push_back(grid + scol);
+      if((grid + scol - 1 < sboard) && (grid %scol != 1))nStore.push_back(grid + scol - 1);
+      if((grid + scol + 1 < sboard) && (grid%scol != 0))nStore.push_back(grid + scol + 1);
 }
 
 void BogglePlayer::getAllValidWordsRec(unsigned int minimum_word_length, set<string>* words, string word, int grid){
   
   //store neighbor grid die
-  set<int> nStore;
+  vector<int> nStore;
   push_neighbor(nStore, grid);
 
-  for (set<int>::iterator it = nStore.begin(); it != nStore.end(); ++it){
+  for (auto neigh : nStore){
+    
   //loop through neighbor grid
-    int neigh = *it;
     //cout << neigh << endl;
     string newWord = word;
     //if not visitied
     if(!isVisited[neigh]){
       
       newWord.append(myBoard[neigh]);
-      //cout << newWord << endl;
+            //cout << newWord << endl;
       //check the word in lexicon
       int result = lexicon.search(newWord);
       //not a prefix and not in lexicon
@@ -141,7 +131,7 @@ void BogglePlayer::getAllValidWordsRec(unsigned int minimum_word_length, set<str
       }
       //it is in the lexicon
       if(result == 2 && newWord.length() >=  minimum_word_length){
-        cout << newWord << endl;
+        //cout << newWord << endl;
         words->insert(newWord);
       }
       isVisited[neigh] = true;
@@ -163,7 +153,7 @@ bool BogglePlayer::isInLexicon(const string& word_to_check) {
 
 vector<int> BogglePlayer::isOnBoard(const string& word) {
   vector<int> path;
-  if(!setboard || !builtLex)return path;
+  if(!setboard)return path;
 
   //reset isVisit
   for(int i=0; i < sboard; i++){
@@ -206,16 +196,17 @@ vector<int> BogglePlayer::isOnBoard(const string& word) {
 
 bool BogglePlayer::isOnBoardRec(vector<int>& path, const string& word, int grid, string& myword){
   //store neighbor dies
-  set<int> ndie;
+  vector<int> ndie;
   push_neighbor(ndie,grid);
   
   //iterate over its neighbors
-  for (set<int>::iterator it = ndie.begin(); it != ndie.end(); ++it){
-      int neigh = *it;
+  for (auto neigh : ndie){
     //check whether visited
     if(!isVisited[neigh]){
       //put it into myword
       myword.append(myBoard[neigh]);
+      cout << myword << endl;
+
       //check prefix
       if(word.substr(0,myBoard[neigh].size()).compare(myBoard[neigh]) == 0){
         path.push_back(neigh);

@@ -43,8 +43,8 @@ bool MTrie::insert(string word) {
     if((cur->children).at(word.at(i) - 'a') == 0){
       //if not, then creat a new one for it
       cur->childNum++;
-      (cur->children).at(word.at(i) - 'a') = new TNode(word.at(i), 
-      (i == word.size() - 1) ? true : false);
+      (cur->children).at(word.at(i) - 'a') = new TNode(word.at(i),false); 
+      //(i == (word.size() - 1) ? true : false);
     }
     
     //go check next letter
@@ -52,7 +52,10 @@ bool MTrie::insert(string word) {
     i++;
 
     //check EOW
-    if(i == word.size()) return true;
+    if(i == word.size()){
+      cur->EOW = true;
+      return true;
+    }
   }
 
   return false;

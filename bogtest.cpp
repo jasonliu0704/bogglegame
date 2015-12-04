@@ -67,6 +67,8 @@ int main(int argc, char *argv[])
         testString.clear();
     }
 
+    cout << "testing getAll..." << endl;
+
     player->buildLexicon(lex);
     if (!player->getAllValidWords(0, &validWords))
     {
