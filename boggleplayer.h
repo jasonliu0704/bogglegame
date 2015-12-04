@@ -4,8 +4,9 @@
 #define BOGGLEPLAYER_H
 #include "baseboggleplayer.h"
 #include "boggleutil.h"
-using namespace std;
-
+#include <vector>
+#include <string>
+#include <set>
 class BogglePlayer : public BaseBogglePlayer {
   public:
   void buildLexicon(const set<string>& word_list);
@@ -20,23 +21,21 @@ class BogglePlayer : public BaseBogglePlayer {
 
   void getCustomBoard(string** &new_board, unsigned int *rows, unsigned int *cols);
 
-  BogglePlayer() {
-  }
+  bool isOnBoardRec(vector<int>& path, const string& word, int grid, string& myword);
+
+  void push_neighbor(set<int>& nStore, int grid);
+  void getAllValidWordsRec(unsigned int minimum_word_length, set<string>* words, string word, int grid);
   
-  ~BogglePlayer() {
-  }
-
-  void push_neighbor(stack& nStack, int grid);
-  getAllValidWordsRec(unsigned int minimum_word_length, set<string>* words, string word, int grid);
-
+  explicit BogglePlayer();
+  ~BogglePlayer();
   private:
   MTrie lexicon;
   //board parameter
-  unsigned int srow, scol, sborad;
+  int srow, scol, sboard;
   string* myBoard;
   bool * isVisited;
   //call indicator
-  bool builtLex, setBoard;
+  bool builtLex, setboard;
 };
 
 #endif

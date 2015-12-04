@@ -2,16 +2,14 @@
 #define BOGGLEUTIL_H
 
 #include <string>
-#include <unordered_map>
-#include <regex>
-#include <set>
+#include <vector>
 using namespace std;
 /**
  * Node of the multiway trie.
  */
 class TNode {
   public:
-    TNode(char value, bool eow);
+    explicit TNode(char value, bool eow);
     bool EOW;
     char val;
     int childNum;
@@ -22,9 +20,9 @@ class TNode {
 class MTrie {
   public:
     TNode* root;
-    MTrie(){};
+    explicit MTrie();
     ~MTrie();
-    bool clean(TNode* n);
+    void clean(TNode* n);
     bool insert(string word);
     int search(string word);
 };

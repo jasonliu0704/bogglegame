@@ -1,10 +1,10 @@
 #include "boggleutil.h"
-#include <iostream>
+//#include <iostream>
 using namespace std;
 
 //return 0 for not a word and prefix, 1 for prefix, 2 for word
-int WordTrie::search(string word) {
-  int i = 0;
+int MTrie::search(string word) {
+  unsigned int i = 0;
   TNode* cur = root; 
   
   while(1){
@@ -23,15 +23,19 @@ int WordTrie::search(string word) {
   }
 }
 
+MTrie::MTrie(){
+  root = new TNode(' ', false);
+}
 
 TNode::TNode(char value, bool eow){
   EOW = eow;
   val = value;
+  children = vector<TNode*>(26, 0);
 }
 
 bool MTrie::insert(string word) {
   TNode* cur = root;
-  int i = 0;
+  unsigned int i = 0;
 
   while(1){
 
@@ -39,12 +43,12 @@ bool MTrie::insert(string word) {
     if((cur->children).at(word.at(i) - 'a') == 0){
       //if not, then creat a new one for it
       cur->childNum++;
-      (cur-children).at(word.at(i) - 'a') = new TNode(word.at(i), 
+      (cur->children).at(word.at(i) - 'a') = new TNode(word.at(i), 
       (i == word.size() - 1) ? true : false);
     }
     
     //go check next letter
-    cur = cur = (cur-children).at(word.at(i) - 'a');
+    cur = (cur->children).at(word.at(i) - 'a');
     i++;
 
     //check EOW
@@ -54,9 +58,6 @@ bool MTrie::insert(string word) {
   return false;
 }
 
-MTrie::MTrie(){
-  root = new TNode(' ', false);
-}
 
 MTrie::~MTrie() {
   clean(root);
@@ -64,9 +65,9 @@ MTrie::~MTrie() {
   root = NULL;
 }
 
-MTrie::clean(TNode* n){
+void MTrie::clean(TNode* n){
   //base case, n's children array has 0 node
-  if(n->childNum == 0){
+  if(n == 0){
     return;
   }
   
@@ -74,6 +75,6 @@ MTrie::clean(TNode* n){
   for(auto& node : n->children){
     clean(node);
     delete node;
-    node == 0;
+    node = 0;
   }
 }
